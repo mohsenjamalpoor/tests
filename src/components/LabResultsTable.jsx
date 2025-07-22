@@ -13,7 +13,7 @@ export default function LabResultsTable({ data, days }) {
           <tr className="bg-gray-100">
             <th className="border px-4 py-2">Test \ Day</th>
             {days.map((day, index) => (
-              <th key={index} className="border px-4 py-2">روز {day}</th>
+              <th key={index} className="border px-4 py-2"> {day}روز</th>
             ))}
           </tr>
         </thead>
