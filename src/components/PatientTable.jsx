@@ -56,25 +56,24 @@ export default function PatientTable({ patients }) {
           })}
         </tbody>
       </table>
+{selectedPatient && (
+  <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 px-2">
+    <div className="bg-white p-4 sm:p-6 rounded-xl shadow-xl w-[95%] max-w-[95vw] sm:max-w-4xl relative max-h-[90vh] overflow-auto">
+      <button
+        className="absolute top-2 left-2 text-red-600 hover:text-red-800"
+        onClick={() => setSelectedPatient(null)}
+        title="بستن"
+      >
+        <FiX size={20} />
+      </button>
+      <h2 className="text-lg font-bold mb-4">
+        نمودار آزمایش‌ها - {selectedPatient.name}
+      </h2>
+      <LabCharts data={selectedPatient.labResults} />
+    </div>
+  </div>
+)}
 
-      {/* مودال نمایش نمودار */}
-      {selectedPatient && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-          <div className="bg-white p-4 sm:p-6 rounded-xl shadow-xl w-[95%] max-w-[95vw] sm:max-w-4xl relative max-h-[90vh] overflow-auto">
-            <button
-              className="absolute top-2 left-2 text-red-600 hover:text-red-800"
-              onClick={() => setSelectedPatient(null)}
-              title="بستن"
-            >
-             <FiX size={20} />
-            </button>
-            <h2 className="text-lg font-bold mb-4">
-              نمودار آزمایش‌ها - {selectedPatient.name}
-            </h2>
-            <LabCharts data={selectedPatient.labResults} />
-          </div>
-        </div>
-      )}
     </div>
   );
 }
