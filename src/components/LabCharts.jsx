@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import {
   LineChart,
   Line,
@@ -10,22 +10,45 @@ import {
   ResponsiveContainer,
 } from 'recharts';
 
-export default function LabCharts({ data }) {
-  const tests = Object.keys(data);
-  const maxLength = Math.max(...tests.map(t => data[t]?.length || 0));
+export default function LabCharts({ data, allTests }) {
+  const [selectedTests, setSelectedTests] = useState(['WBC', 'Hb', 'CRP']);
+
+  const maxLength = Math.max(...allTests.map(t => data[t]?.length || 0));
 
   const chartData = Array.from({ length: maxLength }, (_, i) => {
     const entry = { day: `روز ${i + 1}` };
-    tests.forEach(test => {
+    selectedTests.forEach(test => {
       const val = parseFloat(data[test]?.[i]);
       entry[test] = isNaN(val) ? null : val;
     });
     return entry;
   });
 
+  const toggleTest = (test) => {
+    setSelectedTests(prev =>
+      prev.includes(test)
+        ? prev.filter(t => t !== test)
+        : [...prev, test]
+    );
+  };
+
   return (
     <div className="mt-8">
       <h2 className="text-lg font-bold mb-4 text-center">نمودار مقایسه‌ای آزمایش‌ها</h2>
+
+      <div className="flex flex-wrap gap-3 justify-center mb-6">
+        {allTests.map(test => (
+          <label key={test} className="flex items-center space-x-2 cursor-pointer">
+            <input
+              type="checkbox"
+              checked={selectedTests.includes(test)}
+              onChange={() => toggleTest(test)}
+              className="accent-blue-600"
+            />
+            <span className="text-sm">{test}</span>
+          </label>
+        ))}
+      </div>
 
       <div className="w-full overflow-x-auto">
         <div className="min-w-[700px] mx-auto" style={{ width: `${maxLength * 80}px` }}>
@@ -36,7 +59,7 @@ export default function LabCharts({ data }) {
               <YAxis />
               <Tooltip />
               <Legend />
-              {tests.map((test, index) => (
+              {selectedTests.map((test, index) => (
                 <Line
                   key={test}
                   type="monotone"

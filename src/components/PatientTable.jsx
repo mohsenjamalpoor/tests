@@ -9,6 +9,12 @@ import { formatAge } from '../utils/formatAge';
 export default function PatientTable({ patients }) {
   const navigate = useNavigate();
   const [selectedPatient, setSelectedPatient] = useState(null);
+  const allTests = [
+  'WBC', 'Hb', 'HCT', 'MCV', 'PLT', 'ESR', 'CRP', 'BUN',
+  'Cr', 'Na', 'K', 'Ca', 'P', 'Mg', 'AST', 'ALT', 'Alb',
+  'PT/INR', 'PTT'
+];
+
 
   return (
     <div className="p-4">
@@ -33,7 +39,7 @@ export default function PatientTable({ patients }) {
             return (
               <tr key={patient.id} className="text-center hover:bg-gray-100">
                 <td
-                  className="border px-4 py-2 text-blue-600 hover:underline cursor-pointer"
+                  className="border px-4 py-2 text-blue-600 hover:text-blue-800 cursor-pointer"
                   onClick={() => navigate(`/patient/${patient.id}`)}
                 >
                   {patient.name}
@@ -69,7 +75,7 @@ export default function PatientTable({ patients }) {
       <h2 className="text-lg font-bold mb-4">
         نمودار آزمایش‌ها - {selectedPatient.name}
       </h2>
-      <LabCharts data={selectedPatient.labResults} />
+      <LabCharts data={selectedPatient.labResults} allTests={allTests} />
     </div>
   </div>
 )}
